@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Таблица пользователей</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/site.css">
+</head>
+<body>
+    <div class="container">
+        <div class="toolbar">
+            <button class="btn btn-primary">Block</button>
+            <button class="btn btn-primary">Unblock</button>
+            <button class="btn btn-danger">Delete</button>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="table-checkbox-header"></th>
+                    <th>Идентификатор</th>
+                    <th>Имя</th>
+                    <th>Мыло</th>
+                    <th>Дата регистрации</th>
+                    <th>Дата последнего логина</th>
+                    <th>Статус</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="table-checkbox"><input type="checkbox" /></td>
+                    <td>1</td>
+                    <td>Иван</td>
+                    <td>ivan@example.com</td>
+                    <td>01.01.2023</td>
+                    <td>05.12.2023</td>
+                    <td>Активный</td>
+                </tr>
+                <tr>
+                    <td class="table-checkbox"><input type="checkbox" /></td>
+                    <td>2</td>
+                    <td>Мария</td>
+                    <td>maria@example.com</td>
+                    <td>02.01.2023</td>
+                    <td>04.12.2023</td>
+                    <td>Заблокирован</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+
+
+
