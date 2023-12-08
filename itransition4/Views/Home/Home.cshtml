@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Home";
+    @model List<Users>
 }
 <!DOCTYPE html>
 <html>
@@ -7,49 +8,76 @@
     <meta charset="UTF-8" />
     <title>Таблица пользователей</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/site.css">
 </head>
 <body>
-    <div class="container">
-        <div class="toolbar">
-            <button class="btn btn-primary">Block</button>
-            <button class="btn btn-primary">Unblock</button>
-            <button class="btn btn-danger">Delete</button>
+    <div class="container_fluid">
+        <div class="toolbar" style="margin-top: 10vh;">
+            <form id="yourFormId_block" method="post" asp-action="Block" asp-controller="Home">
+                <button class="btn btn-primary" onclick="submitForm('yourFormId_block')">Block</button>
+                <input type="hidden" name="selectedBlock" id="selectedBlockIndices" />
+            </form>
+            <form id="yourFormId_unblock" method="post" asp-action="Unblock" asp-controller="Home">
+                <button class="btn btn-primary" onclick="submitForm('yourFormId_unblock')">Unblock</button>
+                <input type="hidden" name="selectedUnblock" id="selectedUnblockIndices" />
+            </form>
+            <form id="yourFormId_delete" method="post" asp-action="Delete" asp-controller="Home">
+                <button class="btn btn-danger" onclick="submitForm('yourFormId_delete')">Delete</button>
+                <input type="hidden" name="selectedDelete" id="selectedDeleteIndices" />
+            </form>
         </div>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th class="table-checkbox-header"></th>
-                    <th>Идентификатор</th>
-                    <th>Имя</th>
-                    <th>Мыло</th>
-                    <th>Дата регистрации</th>
-                    <th>Дата последнего логина</th>
-                    <th>Статус</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="table-checkbox"><input type="checkbox" /></td>
-                    <td>1</td>
-                    <td>Иван</td>
-                    <td>ivan@example.com</td>
-                    <td>01.01.2023</td>
-                    <td>05.12.2023</td>
-                    <td>Активный</td>
-                </tr>
-                <tr>
-                    <td class="table-checkbox"><input type="checkbox" /></td>
-                    <td>2</td>
-                    <td>Мария</td>
-                    <td>maria@example.com</td>
-                    <td>02.01.2023</td>
-                    <td>04.12.2023</td>
-                    <td>Заблокирован</td>
-                </tr>
-            </tbody>
-        </table>
+        <a class="btn btn-danger" asp-action="Authorization" asp-controller="Home">Выйти из аккаунта</a>
+        <div class="table-responsive">
+            <table class="table table-bordered" style="overflow-y: scroll">
+                <thead>
+                    <tr>
+                        <th class="table-checkbox-header"></th>
+                        <th>Идентификатор</th>
+                        <th>Имя</th>
+                        <th>Email</th>
+                        <th>Дата регистрации</th>
+                        <th>Дата последнего логина</th>
+                        <th>Статус</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td class="table-checkbox"><input type="checkbox" /></td>
+                            <td>@user.Id_user</td>
+                            <td>@user.Name</td>
+                            <td>@user.Email</td>
+                            <td>@user.Data_reg</td>
+                            <td>@user.Last_data</td>
+                            <td>@user.Dostup</td>
+                            <td style="display: none;"><input type="hidden" name="selectedIndices" value="@user.Id_user" /></td>
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
     </div>
+    <script>function submitForm(formId) {
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            var selectedIds = [];
+
+            checkboxes.forEach(function (checkbox) {
+                var selectedId = checkbox.parentNode.nextElementSibling.textContent;
+                selectedIds.push(selectedId);
+            });
+
+            // Set the value of the hidden input field with the selected indices
+            document.getElementById('selectedBlockIndices').value = selectedIds.join(',');
+            document.getElementById('selectedUnblockIndices').value = selectedIds.join(',');
+            document.getElementById('selectedDeleteIndices').value = selectedIds.join(',');
+
+            // Submit the form to the controller
+            document.getElementById(formId).submit();
+        }</script>
+
+
 </body>
 </html>
 

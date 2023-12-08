@@ -86,3 +86,7 @@ a {
         background: rgba(255,116,0,1);
         border: 2px solid #ff7400;
     }
+.toolbar {
+display: flex;
+gap: 10px;
+}
