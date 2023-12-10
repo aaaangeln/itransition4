@@ -12,6 +12,7 @@ public class HomeController : Controller
     private readonly ILogger<HomeController> _logger;
     private readonly ApplicationDbContext _context;
     public static string ?userMail;
+    public static string? reuserMail;
 
     public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
     {
@@ -214,19 +215,51 @@ public class HomeController : Controller
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
             connection.Open();
-            foreach (var index in indices)
-            {
-                int id = int.Parse(index);
-                string query = $"UPDATE users SET dostup='deleted' WHERE id_user={id};";
-                using (MySqlCommand command = new MySqlCommand(query, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
-            }
+                    foreach (var index in indices)
+                    {
+                        int id = int.Parse(index);
+                        string email = $"select email from users WHERE id_user={id};";
+                        using (MySqlCommand cmd = new MySqlCommand(email, connection))
+                        {
+                            using (MySqlDataReader reader = cmd.ExecuteReader())
+                            {
+                        while (reader.Read())
+                        {
+                            string value = reader.GetString(0);
+                            reuserMail = value;
+                        }
+                                    if (reuserMail == userMail)
+                                    {
+                            Delete_User(id);
+                                        return RedirectToAction("Registration");
+                                    }
+                                    else
+                                    {
+                            Delete_User(id);
+                                    }
+                                
+                            }
+                        }
+                    }
         }
         return RedirectToAction("Home");
     }
 
+
+    public void Delete_User(int id)
+    {
+        string connectionString = "server=localhost;port=8889;username=root;password=root;database=task4;";
+        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        {
+            connection.Open();
+            string query = $"delete from users WHERE id_user={id};";
+            using (MySqlCommand command = new MySqlCommand(query, connection))
+            {
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
+    }
 
     public string HashPassword(string pass)
     {
