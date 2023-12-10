@@ -180,10 +180,37 @@ public class HomeController : Controller
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
                     command.ExecuteNonQuery();
+                    Block_you(id);
                 }
             }
+            if (reuserMail == userMail)
+            {
+                return RedirectToAction("Authorization");
+            }
+            else
+            {
+                return RedirectToAction("Home");
+            }
         }
-        return RedirectToAction("Home");
+    }
+
+    public void Block_you(int id) {
+        string connectionString = "server=localhost;port=8889;username=root;password=root;database=task4;";
+        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        {
+            connection.Open();
+            string query = $"SELECT email FROM users WHERE dostup='blocked' and id_user='{id}';";
+            using (MySqlCommand command = new MySqlCommand(query, connection))
+            {
+                command.ExecuteNonQuery();
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read()) {
+                    string value = reader.GetString(0);
+                    reuserMail = value;
+                }
+                connection.Close();
+            }
+        }
     }
 
     [HttpPost]
@@ -230,12 +257,12 @@ public class HomeController : Controller
                         }
                                     if (reuserMail == userMail)
                                     {
-                            Delete_User(id);
+                                        Delete_User(id);
                                         return RedirectToAction("Registration");
                                     }
                                     else
                                     {
-                            Delete_User(id);
+                                        Delete_User(id);
                                     }
                                 
                             }

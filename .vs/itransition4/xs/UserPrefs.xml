@@ -9,7 +9,7 @@
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="itransition4" expanded="True">
-            <Node name="itransition4">
+            <Node name="itransition4" expanded="True">
               <Node name="Controllers" expanded="True">
                 <Node name="HomeController.cs" selected="True" />
               </Node>
