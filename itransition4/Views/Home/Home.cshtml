@@ -30,7 +30,7 @@
             <table class="table table-bordered" style="overflow-y: scroll">
                 <thead>
                     <tr>
-                        <th class="table-checkbox-header"></th>
+                        <th class="table-checkbox-header"><input type="checkbox" id="selectAllCheckbox" /></th>
                         <th>Идентификатор</th>
                         <th>Имя</th>
                         <th>Email</th>
@@ -72,12 +72,19 @@
             document.getElementById('selectedBlockIndices').value = selectedIds.join(',');
             document.getElementById('selectedUnblockIndices').value = selectedIds.join(',');
             document.getElementById('selectedDeleteIndices').value = selectedIds.join(',');
-
-            // Submit the form to the controller
             document.getElementById(formId).submit();
-        }</script>
+}
+        document.addEventListener('DOMContentLoaded', function () {
+            var selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
-
+            selectAllCheckbox.addEventListener('click', function () {
+                checkboxes.forEach(function (checkbox) {
+                    checkbox.checked = selectAllCheckbox.checked;
+                });
+            });
+        });
+    </script>
 </body>
 </html>
 
